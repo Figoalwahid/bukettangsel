@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Katalog Buket Eksklusif</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&display=swap');
+    body { font-family: 'Jost', sans-serif; }
+    .filter-btn.active { border-bottom: 2px solid #111827; color: #111827; font-weight: 600; }
+  </style>
+</head>
+<body class="bg-white text-gray-800">
+
+  <div class="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
+    <div class="text-center mb-8 mt-4">
+      <h1 class="text-3xl font-medium tracking-wide text-gray-900 mb-2">Editor's Choice</h1>
+      <p class="text-gray-500 text-sm">Pilihan buket uang terbaik untuk momen spesial Anda.</p>
+    </div>
+
+    <!-- Filter Kategori -->
+    <div class="flex justify-center space-x-6 mb-10 overflow-x-auto whitespace-nowrap px-2" id="filter-container">
+      <button class="filter-btn active pb-1 text-sm text-gray-500 uppercase tracking-widest transition-colors" data-filter="all">Semua</button>
+      <!-- Tombol kategori akan di-generate otomatis oleh JS -->
+    </div>
+    
+    <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-10">
+      <p class="text-center col-span-full text-gray-400 tracking-widest text-sm uppercase">Menghubungkan ke database...</p>
+    </div>
+  </div>
+
+  <script>
+    // 1. MASUKKAN URL API DARI APPS SCRIPT DI SINI
+    const API_URL = 'https://script.google.com/macros/s/AKfycbx7f7HKAf3oSxyuhD3FE7VNIvuN4mmaQ1Xp1q0MBgXkYSjhbDDN8fszbhri54QlfWE7/exec'; 
+    // 2. MASUKKAN NOMOR WA
+    const WA_NUMBER = '081287547678'; 
+
+    let allProducts = [];
+
+    document.addEventListener('DOMContentLoaded', fetchData);
+
+    function fetchData() {
+      fetch(API_URL)
+        .then(response => response.json())
+        .then(res => {
+          if (res.status === 'error') throw new Error(res.message);
+          allProducts = res.data.filter(p => p.Nama_Produk && p.Nama_Produk !== '');
+          generateFilters(allProducts);
+          renderProducts(allProducts);
+        })
+        .catch(error => {
+          document.getElementById('product-grid').innerHTML = `<p class="text-red-500 text-center col-span-full font-bold">Gagal memuat katalog: ${error.message}</p>`;
+        });
+    }
+
+    function generateFilters(products) {
+      const filterContainer = document.getElementById('filter-container');
+      const categories = [...new Set(products.map(p => p.Kategori))];
+      
+      categories.forEach(cat => {
+        if(!cat) return;
+        const btn = document.createElement('button');
+        btn.className = 'filter-btn pb-1 text-sm text-gray-400 hover:text-gray-900 uppercase tracking-widest transition-colors';
+        btn.setAttribute('data-filter', cat);
+        btn.innerText = cat;
+        btn.addEventListener('click', (e) => applyFilter(e, cat));
+        filterContainer.appendChild(btn);
+      });
+
+      // Event listener untuk tombol 'Semua'
+      filterContainer.querySelector('[data-filter="all"]').addEventListener('click', (e) => applyFilter(e, 'all'));
+    }
+
+    function applyFilter(event, category) {
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+
+      const filtered = category === 'all' ? allProducts : allProducts.filter(p => p.Kategori === category);
+      renderProducts(filtered);
+    }
+
+    function renderProducts(products) {
+      const grid = document.getElementById('product-grid');
+      grid.innerHTML = ''; 
+
+      if(products.length === 0) {
+        grid.innerHTML = '<p class="text-center col-span-full text-gray-400">Tidak ada produk di kategori ini.</p>';
+        return;
+      }
+
+      products.forEach(product => {
+        const card = document.createElement('div');
+        card.className = 'group flex flex-col bg-white';
+        
+        const waText = encodeURIComponent(`Halo, saya tertarik dengan produk ${product.Nama_Produk} (Harga Promo: Rp${product.Harga_Promo}).`);
+        const waLink = `https://wa.me/${WA_NUMBER}?text=${waText}`;
+
+        let priceHTML = '<div class="mt-2 text-sm">';
+        if (product.Harga_Asli) {
+          priceHTML += `<span class="text-gray-400 line-through mr-2">Rp ${product.Harga_Asli}</span>`;
+        }
+        priceHTML += `<span class="text-red-600 font-medium">Rp ${product.Harga_Promo}</span></div>`;
+
+        card.innerHTML = `
+          <div class="relative overflow-hidden mb-4 aspect-[4/5] bg-gray-50">
+            <img src="${product.Gambar_URL}" alt="${product.Nama_Produk}" onerror="this.onerror=null;this.src='https://via.placeholder.com/400x500/f3f4f6/9ca3af?text=Image+Error';" class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105">
+          </div>
+          <div class="flex flex-col text-center flex-grow px-2">
+            <h2 class="text-base text-gray-900 tracking-wide">${product.Nama_Produk}</h2>
+            ${priceHTML}
+            <a href="${waLink}" target="_blank" class="mt-4 w-full bg-black hover:bg-gray-800 text-white text-center py-2.5 text-xs font-medium tracking-widest uppercase transition-colors">Beli Sekarang</a>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+  </script>
+</body>
+</html>
