@@ -16,7 +16,7 @@
     .img-enter { transform: scale(1) !important; }
   </style>
 </head>
-<body class="bg-white text-gray-800">
+<body class="bg-white text-gray-800 text-lg sm:text-xl">
 
   <div class="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
     <!-- NAVBAR -->
@@ -39,7 +39,7 @@
       <button class="filter-btn active pb-1 text-sm text-gray-500 uppercase tracking-widest transition-colors" data-filter="all">Semua</button>
     </div>
     
-    <div id="product-grid" class="grid grid-cols-2 md:grid-cols-5 gap-x-2 md:gap-x-3 gap-y-4 md:gap-y-6">
+    <div id="product-grid" class="grid grid-cols-3 md:grid-cols-5 gap-x-2 md:gap-x-3 gap-y-4 md:gap-y-6">
       <p class="text-center col-span-full text-gray-400 tracking-widest text-xs uppercase">Katalog Buket Eksklusif sedang dimuat...</p>
     </div>
   </div>
@@ -198,7 +198,6 @@
       currentImageIndex = 0;
       updateLightboxContent();
 
-      // Kontrol visibilitas navigasi
       if (currentGallery.length > 1) {
         btnPrev.classList.remove('hidden');
         btnNext.classList.remove('hidden');
@@ -209,18 +208,32 @@
         indicator.classList.add('hidden');
       }
 
-      // Animasi Buka
       modal.classList.add('lightbox-enter');
       setTimeout(() => modalImg.classList.add('img-enter'), 50);
-      document.body.style.overflow = 'hidden'; // Kunci scroll halaman
+      document.body.style.overflow = 'hidden'; 
+
+      // INJEKSI HISTORY API UNTUK TOMBOL BACK HP
+      window.history.pushState({ lightbox: true }, "", "#gambar-terbuka");
     }
 
-    function closeLightbox() {
+    function closeLightbox(fromPopstate = false) {
       modal.classList.remove('lightbox-enter');
       modalImg.classList.remove('img-enter');
       document.body.style.overflow = '';
-      setTimeout(() => { modalImg.src = ''; }, 300); // Bersihkan memori render
+      setTimeout(() => { modalImg.src = ''; }, 300); 
+
+      // Hapus state history jika ditutup manual lewat tombol X atau tombol ESC di Keyboard
+      if (fromPopstate !== true && window.location.hash === '#gambar-terbuka') {
+        window.history.back();
+      }
     }
+
+    // DETEKSI EKSEKUSI TOMBOL BACK (KEMBALI) DI HP/BROWSER
+    window.addEventListener('popstate', function() {
+      if (modal.classList.contains('lightbox-enter')) {
+        closeLightbox(true);
+      }
+    });
 
     function changeImage(direction) {
       currentImageIndex += direction;
