@@ -14,6 +14,10 @@
     /* Animasi Lightbox */
     .lightbox-enter { opacity: 1 !important; pointer-events: auto !important; }
     .img-enter { transform: scale(1) !important; }
+
+    /* CSS HIDE SCROLL TESTIMONI */
+    .hide-scroll::-webkit-scrollbar { display: none; }
+    .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body class="bg-white text-gray-800 text-lg sm:text-xl">
@@ -40,25 +44,104 @@
     </div>
     
     <div id="product-grid" class="grid grid-cols-3 md:grid-cols-5 gap-x-2 md:gap-x-3 gap-y-4 md:gap-y-6">
-      <p class="text-center col-span-full text-gray-400 tracking-widest text-xs uppercase">Katalog Buket Eksklusif sedang dimuat...</p>
+      <p class="text-center col-span-full text-gray-400 tracking-widest text-xs uppercase"></p>
     </div>
   </div>
 
-  <!-- PASTE FOOTER DI SINI -->
-  <footer class="border-t border-gray-100 bg-gray-50 mt-12 w-full">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col md:flex-row justify-between items-center gap-4">
-      <div class="text-center md:text-left">
-        <h3 class="text-lg font-semibold tracking-widest text-gray-900 uppercase mb-1">Buket Tangsel</h3>
-        <p class="text-xs text-gray-500">Katalog Buket Eksklusif Tangerang Selatan</p>
+  <!-- SECTION TESTIMONI -->
+  <div class="max-w-5xl mx-auto p-4 mt-8 border-t border-gray-100 pt-8 hidden" id="testimoni-wrapper">
+    <div class="text-center mb-6">
+      <h2 class="text-xl font-medium tracking-wide text-gray-900 uppercase">Testimoni</h2>
+      <p class="text-gray-500 text-[11px]">Kepercayaan pelanggan Buket Tangsel.</p>
+    </div>
+    <!-- Horizontal Scroll / Swipe-able -->
+    <div id="testimoni-grid" class="flex overflow-x-auto gap-3 pb-4 snap-x snap-mandatory hide-scroll">
+      <!-- Injeksi JS -->
+    </div>
+  </div>
+
+  <!-- MEGA FOOTER DARK THEME -->
+  <footer class="bg-[#1a1a1a] text-gray-300 mt-16 w-full text-sm">
+    <div class="max-w-6xl mx-auto px-6 py-12">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        
+        <!-- Kolom 1: Info -->
+        <!-- Kolom 1: Info -->
+        <div>
+          <h4 class="text-white font-bold tracking-widest uppercase mb-4 text-xs">Info Buket Tangsel</h4>
+          <ul class="space-y-2">
+            <li><a href="javascript:void(0)" onclick="openInfoModal('Tentang Kami', 'tentang')" class="hover:text-white transition">Tentang Kami</a></li>
+            <li><a href="javascript:void(0)" onclick="openInfoModal('Kebijakan Privasi', 'privasi')" class="hover:text-white transition">Kebijakan Privasi</a></li>
+            <li><a href="javascript:void(0)" onclick="openInfoModal('Syarat & Ketentuan', 'syarat')" class="hover:text-white transition">Syarat & Ketentuan</a></li>
+            <li><a href="javascript:void(0)" onclick="openInfoModal('Daftar Koleksi', 'koleksi')" class="hover:text-white transition">Daftar Koleksi</a></li>
+          </ul>
+        </div>
+
+        <!-- Kolom 2: Bantuan -->
+        <div>
+          <h4 class="text-white font-bold tracking-widest uppercase mb-4 text-xs">Bantuan</h4>
+          <ul class="space-y-2">
+            <li><a href="javascript:void(0)" onclick="openInfoModal('Cara Order', 'order')" class="hover:text-white transition">Cara Order</a></li>
+            <li><a href="javascript:void(0)" onclick="openInfoModal('Pembayaran', 'bayar')" class="hover:text-white transition">Pembayaran</a></li>
+            <li><a href="javascript:void(0)" onclick="openInfoModal('Pengiriman', 'kirim')" class="hover:text-white transition">Pengiriman</a></li>
+            <li><a href="javascript:void(0)" onclick="openInfoModal('FAQ', 'faq')" class="hover:text-white transition">FAQ</a></li>
+          </ul>
+        </div>
+
+        <!-- Kolom 3: Layanan Customer -->
+        <div>
+          <h4 class="text-white font-bold tracking-widest uppercase mb-4 text-xs">Layanan Customers</h4>
+          <ul class="space-y-3">
+            <li>
+              <!-- Ganti wa.me/ nomor di bawah ini -->
+              <a href="https://wa.me/6281234567890" target="_blank" class="flex items-center gap-2 hover:text-white transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                +62 882 1227 6866
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Kolom 4: Join Email (Fungsional ke WA) -->
+        <div>
+          <h4 class="text-white font-bold tracking-widest uppercase mb-4 text-xs">Dapatkan Promo</h4>
+          <p class="mb-4 text-xs leading-relaxed text-gray-400">Jadilah yang pertama tahu tentang produk baru dan penawaran eksklusif kami.</p>
+          <form onsubmit="subscribeWA(event)" class="flex border-b border-gray-600 pb-2">
+            <input type="text" id="wa-name" placeholder="Nama / Email Anda" class="bg-transparent w-full focus:outline-none text-white text-sm" required>
+            <button type="submit" class="text-white hover:text-gray-300 transition">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </button>
+          </form>
+        </div>
+
       </div>
-      <div class="text-center md:text-right text-xs text-gray-400">
+      
+      <div class="mt-12 pt-6 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
         <p>&copy; 2026 Buket Tangsel. All rights reserved.</p>
-        <p class="mt-1">Jam Operasional: 08.00 - 20.00 WIB</p>
+        <p class="mt-2 md:mt-0">Dibuat dengan presisi di Tangerang Selatan</p>
       </div>
     </div>
   </footer>
 
   <!-- LIGHTBOX MODAL (Tersembunyi di awal) -->
+
+  <!-- INFO MODAL (Kotak Dialog Footer) -->
+  <div id="info-modal" class="fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-2xl w-full max-w-md overflow-hidden transform scale-95 transition-transform duration-300" id="info-modal-card">
+      <div class="flex justify-between items-center p-4 border-b border-gray-100">
+        <h3 id="info-modal-title" class="text-base font-bold text-gray-900 tracking-wide uppercase">Judul</h3>
+        <button onclick="closeInfoModal()" class="text-gray-400 hover:text-black transition-colors">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+      <div id="info-modal-body" class="p-5 text-sm text-gray-600 leading-relaxed max-h-[60vh] overflow-y-auto">
+        <!-- Konten akan diisi otomatis oleh JS -->
+      </div>
+      <div class="p-4 border-t border-gray-100 bg-gray-50 text-right">
+        <button onclick="closeInfoModal()" class="px-5 py-2 bg-black text-white text-[10px] font-bold tracking-widest uppercase hover:bg-gray-800 transition-colors">Tutup</button>
+      </div>
+    </div>
+  </div>
   <div id="lightbox" class="fixed inset-0 z-50 bg-white/10 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300 flex items-center justify-center">
     
     <!-- Tombol Tutup -->
@@ -98,20 +181,77 @@
     let currentGallery = [];
     let currentImageIndex = 0;
 
-    document.addEventListener('DOMContentLoaded', fetchData);
+    document.addEventListener('DOMContentLoaded', () => fetchData(3));
 
-    function fetchData() {
-      fetch(API_URL)
-        .then(response => response.json())
-        .then(res => {
-          if (res.status === 'error') throw new Error(res.message);
-          allProducts = res.data.filter(p => p.Nama_Produk && p.Nama_Produk !== '');
-          generateFilters(allProducts);
-          renderProducts(allProducts);
-        })
-        .catch(error => {
-          document.getElementById('product-grid').innerHTML = `<p class="text-red-500 text-center col-span-full font-bold">Gagal memuat katalog: ${error.message}</p>`;
-        });
+    async function fetchData(retries = 3) {
+      const grid = document.getElementById('product-grid');
+      
+      // Render Skeleton Loading hanya pada percobaan pertama
+      if (retries === 3) {
+        grid.innerHTML = Array(10).fill(`
+          <div class="flex flex-col animate-pulse">
+            <div class="w-full aspect-[4/5] bg-gray-200 mb-2"></div>
+            <div class="px-1 flex flex-col gap-2 mt-1">
+              <div class="h-3 bg-gray-200 rounded w-3/4 mx-auto"></div>
+              <div class="h-3 bg-gray-200 rounded w-1/2 mx-auto"></div>
+              <div class="h-7 bg-gray-200 mt-1 w-full"></div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      try {
+        const response = await fetch(API_URL);
+        const res = await response.json(); 
+        
+        if (res.status === 'error') throw new Error(res.message);
+        
+        const rawData = res.data.filter(p => p.Nama_Produk && p.Nama_Produk !== '');
+        
+        // PISAHKAN REVIEW DAN KATALOG EKSKLUSIF
+        const reviewData = rawData.filter(p => p.Kategori && p.Kategori.toLowerCase() === 'review');
+        allProducts = rawData.filter(p => !p.Kategori || p.Kategori.toLowerCase() !== 'review');
+
+        generateFilters(allProducts);
+        renderProducts(allProducts);
+        renderTestimoni(reviewData); 
+
+      } catch (error) {
+        // Auto-Retry jika gagal membaca JSON
+        if (retries > 1) {
+          console.warn(`Gagal memuat, mencoba ulang otomatis... (Sisa percobaan: ${retries - 1})`);
+          setTimeout(() => fetchData(retries - 1), 1000); 
+        } else {
+          grid.innerHTML = `<p class="text-red-500 text-center col-span-full font-bold text-xs mt-4">Koneksi jaringan terputus. Silakan refresh (muat ulang) halaman ini.</p>`;
+        }
+      }
+    }
+
+    function renderTestimoni(reviews) {
+      const wrapper = document.getElementById('testimoni-wrapper');
+      const grid = document.getElementById('testimoni-grid');
+      
+      if (reviews.length === 0) return; // Jangan tampilkan jika sheet "review" kosong
+      
+      wrapper.classList.remove('hidden');
+      grid.innerHTML = '';
+
+      reviews.forEach(review => {
+        const imagesRaw = review.Gambar_URL ? review.Gambar_URL : '';
+        const coverImage = imagesRaw.split(',')[0].trim();
+        if(!coverImage) return;
+
+        const card = document.createElement('div');
+        // Desain melengkung (rounded) agar berbeda dengan produk jualan
+        card.className = 'snap-center shrink-0 w-32 md:w-40 bg-gray-50 cursor-pointer overflow-hidden group rounded-lg';
+        
+        card.innerHTML = `
+          <div class="relative aspect-[3/4]" onclick="openLightbox(this)" data-images="${imagesRaw}">
+            <img src="${coverImage}" alt="Testimoni" class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105">
+          </div>
+        `;
+        grid.appendChild(card);
+      });
     }
 
     function generateFilters(products) {
@@ -172,9 +312,12 @@
             <img src="${coverImage}" alt="${product.Nama_Produk}" class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105">
             ${imageArray.length > 1 ? `<div class="absolute top-1 right-1 bg-black/50 text-white text-[8px] font-bold px-1.5 py-0.5 rounded backdrop-blur-sm">+${imageArray.length - 1}</div>` : ''}
           </div>
-          <div class="flex flex-col text-center flex-grow px-1">
-            <h2 class="text-[11px] font-semibold text-gray-900 tracking-wide leading-tight">${product.Nama_Produk}</h2>
-            ${priceHTML.replace('text-sm', 'text-[10px]').replace('text-red-600', 'text-red-600 font-bold')}
+          <div class="flex flex-col justify-between text-center flex-grow px-1">
+            <div class="flex flex-col justify-start">
+              <!-- line-clamp-2 akan memotong teks dengan titik tiga jika lebih dari 2 baris, min-h-[32px] menjaga tinggi tetap stabil meski hanya 1 baris -->
+              <h2 class="text-[11px] font-semibold text-gray-900 tracking-wide leading-tight line-clamp-2 min-h-[32px]">${product.Nama_Produk}</h2>
+              ${priceHTML.replace('text-sm', 'text-[10px]').replace('text-red-600', 'text-red-600 font-bold')}
+            </div>
             <a href="${waLink}" target="_blank" class="mt-2 w-full bg-black hover:bg-gray-800 text-white text-center py-1.5 text-[9px] font-medium tracking-widest uppercase transition-colors">Beli</a>
           </div>
         `;
@@ -262,6 +405,36 @@
       if (e.key === 'ArrowRight' && currentGallery.length > 1) changeImage(1);
       if (e.key === 'ArrowLeft' && currentGallery.length > 1) changeImage(-1);
     });
+
+    /* --- DATABASE TEKS FOOTER & FUNGSI MODAL --- */
+    const infoData = {
+      'tentang': '<b>Visi Buket Tangsel:</b><br>Menjadi penyedia buket dan hadiah personal eksklusif terbaik di wilayah Tangerang Selatan. Kami merangkai setiap buket uang dan bunga dengan dedikasi, presisi, dan estetika tinggi untuk menyempurnakan setiap momen tak terlupakan Anda.',
+      'privasi': 'Selamat datang di Bukettangsel. Dengan mengakses Situs, Anda mengkonfirmasi pemahaman Anda tentang Syarat dan Ketentuan yang berlaku. Jika Anda tidak menyetujui Syarat dan Ketentuan penggunaan, Anda tidak akan menggunakan website ini. Situs berhak, untuk mengubah, memodifikasi, menambah, atau menghapus bagian-bagian dari Syarat dan Ketentuan penggunaan setiap saat. Perubahan akan efektif bila dimasukkan ke dalam Situs tanpa pemberitahuan lain. Mohon periksa secara teratur. Apabila Anda terus menggunakan Situs setelah adanya pengumuman perubahan, merupakan penerimaan Anda dari perubahan tersebut.',
+      'syarat': 'Anda harus berusia minimal 18 tahun atau mengakses situs di bawah pengawasan orang tua atau wali hukum yang sah untuk melakukan transaksi.',
+      'koleksi': 'Kami menyediakan beragam koleksi premium yang dapat disesuaikan dengan kebutuhan Anda, meliputi:<br><br>• Buket Uang (Money Bouquet)<br>• Buket Bunga Segar & Artificial<br>• Buket Snack & Coklat<br>• Buket Wisuda & Anniversary<br><br>Setiap pesanan dapat di-<i>custom</i> (warna, bentuk, dan isi) sesuai permintaan Anda.',
+      'order': 'Proses pemesanan dapat dilakukan dengan mudah melalui <b>WhatsApp</b>.<br><br>Anda bisa langsung menyebutkan spesifikasi pesanan, mengirimkan gambar referensi, dan me-<i>request</i> detail buket agar harganya bisa disesuaikan dengan <i>budget</i> yang Anda miliki.',
+      'bayar': 'Kami menerima pembayaran yang mudah dan aman melalui:<br><br>• <b>DANA</b><br>• <b>QRIS</b> (Menerima semua E-Wallet & M-Banking)<br>• <b>Transfer Bank</b>',
+      'kirim': 'Kami melayani pengiriman ekstra aman agar buket tetap utuh sampai tujuan:<br><br>• <b>Kurir COD / Pengiriman Langsung:</b> Khusus area Tangerang Selatan, Tangerang Kota, BSD, dan Pamulang.<br>• <b>Jasa Pengiriman Logistik:</b> Tersedia untuk rute yang meng-<i>cover</i> lokasi pemesan di luar area tersebut.',
+      'faq': `Silahkan chat langsung <i>Customer Service</i> kami melalui WhatsApp untuk pertanyaan lebih lanjut atau pemesanan cepat di nomor:<br><br><b><a href="https://wa.me/${WA_NUMBER}" target="_blank" class="text-green-600 font-bold hover:underline">+${WA_NUMBER}</a></b>`
+    };
+
+    const infoModal = document.getElementById('info-modal');
+    const infoModalCard = document.getElementById('info-modal-card');
+
+    function openInfoModal(title, key) {
+      document.getElementById('info-modal-title').innerText = title;
+      document.getElementById('info-modal-body').innerHTML = infoData[key];
+      
+      infoModal.classList.remove('opacity-0', 'pointer-events-none');
+      setTimeout(() => infoModalCard.classList.remove('scale-95'), 50);
+      document.body.style.overflow = 'hidden'; 
+    }
+
+    function closeInfoModal() {
+      infoModal.classList.add('opacity-0', 'pointer-events-none');
+      infoModalCard.classList.add('scale-95');
+      document.body.style.overflow = '';
+    }
   </script>
 </body>
 </html>
